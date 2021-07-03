@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: better-minecraft-server-pi
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    replicas: 1
+    selector:
+      matchLabels:
+        app: better-minecraft
+    template:
+      metadata:
+        labels:
+          app: better-minecraft
+      spec:
+        volumes:
+          - name: world
+            persistentVolumeClaim:
+              claimName: better-minecraft-world
+        containers:
+          - name: better-minecraft
+            image: benri/better-minecraft-server
+            tty: true
+            imagePullPolicy: Always
+            volumeMounts:
+              - name: world
+                mountPath: /minecraft-server/world
+                subPath: world
+              - name: world
+                mountPath: /minecraft-server/logs
+                subPath: logs
+            ports:
+              - name: game-port
+                containerPort: 25565
+                hostPort: 25565
+            resources:
+              requests:
+                cpu: 50m
+                memory: 100Mi
+              limits:
+                cpu: 1
+                memory: 2Gi
+            env:
+              - name: EULA
+                value: "TRUE"
