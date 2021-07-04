@@ -3,13 +3,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: better-minecraft-server-pi
+  labels:
+    app: better-minecraft
 spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: better-minecraft
@@ -43,13 +45,14 @@ spec:
           ports:
             - name: game-port
               containerPort: 25565
-              hostPort: 25565
+            - name: voice-chat-port
+              containerPort: 24454
           resources:
             requests:
-              cpu: 50m
+              cpu: 2
               memory: 5Gi
             limits:
-              cpu: 1
+              cpu: 3
               memory: 6Gi
           env:
             - name: EULA

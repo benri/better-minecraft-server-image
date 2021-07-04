@@ -5,6 +5,7 @@ metadata:
   name: nfs-pv
   labels:
     name: better-minecraft-world-nfs-pv
+    app: better-minecraft
 spec:
   storageClassName: manual
   capacity:
@@ -22,6 +23,7 @@ metadata:
   name: nfs-pvc
   labels:
     name: better-minecraft-world-nfs-pvc
+    app: better-minecraft
 spec:
   storageClassName: manual
   accessModes:
