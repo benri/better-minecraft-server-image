@@ -1,13 +1,31 @@
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv
+  labels:
+    name: better-minecraft-world-nfs-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 0.0.0.0 # ip address of nfs server
+    path: "/path/to/minecraft" # path to directory
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: better-minecraft-world
+  name: nfs-pvc
   labels:
-    app: better-minecraft
+    name: better-minecraft-world-nfs-pvc
 spec:
+  storageClassName: manual
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 2Gi
